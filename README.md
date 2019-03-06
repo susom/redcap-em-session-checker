@@ -28,3 +28,13 @@ is protected by your server's web-server authentication (Shibboleth).
 
 There are numerous options to enable server-side logging via the optional emLogger
 em or client-side logging via javascript console.log.
+
+
+### How does it work?
+
+This EM overrides the javascript function that normally submits a data entry form when
+a user clicks 'save'.  Before saving, it checks that it can reach the `check.php` script
+in the EM.  If it can, it then saves the form and nothing changes.  If it CANNOT
+verify the connection, it displays a dialog telling the user to click on a button
+to open a new tab and create a new server session.  After the session is made, 
+the user is instructed to close the tab and return to their original form and re-save.
