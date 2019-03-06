@@ -10,29 +10,43 @@ sessionChecker.checkBeforeSubmit = function() {
         type: "GET",
         url: sessionChecker.checkUrl
     }).always(function(data) {
+        var modal = $('#session-checker-modal');
+        var isOpen = (modal.data('bs.modal') || {})._isShown;
+
         if (data == 1) {
-            sessionChecker.log("Good");
-            if (! sessionChecker.status) {
-                // The session was BAD, now it is good, so let's remove the warning
-                $('div.session-checker-alert-wrapper').slideUp();
-                sessionChecker.log("Removing warning");
-            } else {
-                // Session was good, so let's simply submit the proxied function!
+            sessionChecker.log("Good Session");
+            if (isOpen) modal.modal('hide');
+
+            if (sessionChecker.status) {
+                // Session still good - submit
                 sessionChecker.log("Submitting!");
                 sessionChecker.formSubmitDataEntry();
+            } else {
+                // Connection has gone good so lets remove the modal
+                sessionChecker.status = true;
+                sessionChecker.log("Removing Modal");
+
+                // Tell user it is save to SAVE again with an alert that dismisses after 5 seconds
+                $('#session-checker-success-alert')
+                    .fadeTo(5000, 500)
+                    .slideUp(500, function(){
+                        $("#session-checker-success-alert").slideUp(500);
+                    });
             }
-            sessionChecker.status = true;
         } else {
             sessionChecker.log("Bad Session");
             if (sessionChecker.status) {
-                // good session went bad
-                $('div.session-checker-alert-wrapper').slideDown();
+                // Open modal
+                if (!isOpen) modal.modal('show');
+
+                // Session has gone bad!
                 sessionChecker.status = false;
-                sessionChecker.log("Adding session warning");
+                sessionChecker.log("Session Now Bad");
             } else {
-                // session was already bad - nothing has changed
+                // Session still bad!
             }
         }
+
         sessionChecker.log("Session state", sessionChecker.status);
     });
 };
@@ -49,7 +63,7 @@ window.setInterval( function() {
     // Check session again!
     sessionChecker.checkBeforeSubmit();
 
-}, 15 * 1000);
+}, 5 * 1000);
 
 
 /**
@@ -82,7 +96,10 @@ sessionChecker.formSubmitDataEntry = formSubmitDataEntry;
 
 // Redefine the original
 formSubmitDataEntry = function () {
+    // Reset the status on a new-save
+    sessionChecker.status = true;
+
     return sessionChecker.checkBeforeSubmit();
 };
 
-sessionChecker.log("Proxied formSubmitDataEntry");
+sessionChecker.log("Proxied formSubmitDataEntry function with sessionChecker");
