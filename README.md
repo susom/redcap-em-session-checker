@@ -19,8 +19,18 @@ So, we built this tool to verify that before a form is submitted, the connection
 to the server is still valid.  It currently only captures data entry forms (not
 project setup or other points of entry).
 
+#### The Problem in a little more depth
 
-### How to Use
+Technically what I think is happening is that Apache is receiving the 'save' 
+POST, the mod_shib sees a new IP address so it issues a redirect to our SAML 
+login endpoint where it passes the original destination URL but NOT the POST
+body.  Our IDP then verifies the cookie and says this user is 'still good' so
+it redirects to the `/DataEntry/index.php` endpoint but without any body so REDCap
+just renders the add/edit record page.
+
+The POST data has been lost is there isn't much we can do about it.
+
+### How to Configure
 
 Simply enable this EM for ALL PROJECTS (first checkbox).  It assumes that
 the EM url (e.g. https://your.site/external_modules/?prefix=session_checker&page=check&pid=xx)
