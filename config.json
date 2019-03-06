@@ -1,0 +1,58 @@
+{
+  "name": "Session Checker",
+
+  "namespace":"Stanford\\SessionChecker",
+
+  "description": "Provides ability to check session validity prior to submitting forms for authenticated users",
+
+  "versions": [
+    { "0.1": "Initial" }
+  ],
+
+  "authors": [
+    {
+      "name": "Andrew Martin",
+      "email": "andy123@stanford.edu",
+      "institution": "Stanford University"
+    }
+  ],
+
+  "permissions": [
+    "redcap_every_page_top",
+    "redcap_data_entry_form_top"
+  ],
+
+  "no-auth-pages": [
+  ],
+
+  "links": {
+    "control-center": [
+    ],
+    "project": [
+    ]
+  },
+
+  "system-settings": [
+    {
+      "key": "instructions",
+      "name": "<div class='alert alert-success'><h6><b>Session Checker</b></h6><p>This module should be enabled for all projects - it checks prior to form submission that a valid session is in place.  Designed for Shibboleth, it may work with other authentication types as well.</div>",
+      "type": "descriptive"
+    },
+    {
+      "key": "enable-system-debug-logging",
+      "name": "<b>Enable Debug Logging</b><br>If you have the Stanford emLogger external module installed and configured,<br> you can enable additional debug-level logging through this checkbox</b>",
+      "required": false,
+      "type": "checkbox"
+    },
+    {
+      "key": "enable-js-debug-logging",
+      "name": "<b>Enable Javascript Console Logging</b><br>This will debug to the js console on the client and should only be used for test/dev.</b>",
+      "required": false,
+      "type": "checkbox"
+    }
+
+  ],
+
+  "project-settings": [
+  ]
+}
