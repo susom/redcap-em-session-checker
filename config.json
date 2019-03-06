@@ -6,7 +6,7 @@
   "description": "Provides ability to check session validity prior to submitting forms for authenticated users",
 
   "versions": [
-    { "0.1": "Initial" }
+    { "0.1": "Initial Release" }
   ],
 
   "authors": [
@@ -35,7 +35,7 @@
   "system-settings": [
     {
       "key": "instructions",
-      "name": "<div class='alert alert-success'><h6><b>Session Checker</b></h6><p>This module should be enabled for all projects - it checks prior to form submission that a valid session is in place.  Designed for Shibboleth, it may work with other authentication types as well.</div>",
+      "name": "<div class='alert alert-success'><h6><b>Session Checker</b></h6><p>This module should be enabled for all projects - it checks prior to form submission that a valid session is in place.  Designed for Shibboleth, it may work with other web-server-based authentication types as well.</div>",
       "type": "descriptive"
     },
     {

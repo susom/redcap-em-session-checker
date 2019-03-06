@@ -17,11 +17,11 @@ if (isset($_GET['action']) && $_GET['action'] == "refresh") {
     $HtmlPage = new HtmlPage();
     $HtmlPage->PrintHeaderExt();
     ?>
-        <div class="jumbotron text-center alert-success">
+        <div class="jumbotron text-center alert-danger">
             <h2 class="display-4">REDCap Session Established</h2>
             <p class="lead text-center">Your REDCap session is now working.</p>
             <p class="text-center">Please close this tab and return to your REDCap form and press 'SAVE' to submit your form.</p>
-            <div class="mt-4 btn btn-primaryrc btn-lg" role="button">Close Tab</div>
+            <div class="mt-4 btn btn-danger btn-lg" role="button">Close Tab</div>
         </div>
         <script>
             $(".btn").on('click', function() { close(); });
