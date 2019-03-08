@@ -27,7 +27,16 @@ if (isset($_GET['action']) && $_GET['action'] == "refresh") {
             $(".btn").on('click', function() { close(); });
         </script>
     <?php
-    $module->emLog("Session refreshed");
+
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+    $module->emLog("Session refreshed", $ip);
     exit();
 }
 

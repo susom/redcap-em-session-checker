@@ -26,12 +26,24 @@ class SessionChecker extends \ExternalModules\AbstractExternalModule
 
                 // This determines whether or not we log to the client console
                 sessionChecker.jsLog = <?php echo $this->isDev() ?>;
+
+                // Set to true on startup
+                sessionChecker.status = true;
             </script>
             <script src='<?php echo $this->getUrl('sessionChecker.js'); ?>'></script>
 
             <style>
                 /* Fix redcap alert border */
                 #session-checker-success-alert { border: 1px solid darkgreen !important; }
+
+                .alert-fixed {
+                    position:fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    z-index:9999;
+                    border-radius:0;
+                }
             </style>
 
             <div id="session-checker-modal" class="modal" tabindex="-1" role="dialog">
@@ -61,7 +73,7 @@ class SessionChecker extends \ExternalModules\AbstractExternalModule
                 </div>
             </div>
 
-            <div class="alert alert-success darkgreen collapse" id="session-checker-success-alert">
+            <div class="alert alert-success darkgreen collapse alert-fixed" id="session-checker-success-alert">
                 <button type="button" class="close" data-dismiss="session-checker-success-alert">x</button>
                 <h4 class="alert-heading">REDCap Session Re-Established</h4>
                 You may now safely save your record.
