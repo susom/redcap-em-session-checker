@@ -16,10 +16,23 @@ if (isset($_GET['action']) && $_GET['action'] == "refresh") {
     // RENDER A NICE PAGE
     $HtmlPage = new HtmlPage();
     $HtmlPage->PrintHeaderExt();
+
+    $old_ip = @$_GET['ip'];
+    $new_ip = $module->getIp();
+
     ?>
         <div class="jumbotron text-center alert-danger">
             <h2 class="display-4">REDCap Session Established</h2>
             <p class="lead text-center">Your REDCap session is now working.</p>
+            <?php
+                if (!empty($old_ip) && ($old_ip != $new_ip)) {
+                    // The ip addresses have changed
+                    echo "<p>It appears that your IP address has changed since your last valid session ($old_ip => $new_ip). " .
+                        "This could explain why your session was lost.  If you work in an environment where your network IP " .
+                        "is unreliable, you may want to try making a VPN connection first.</p>";
+                }
+
+            ?>
             <p class="text-center">Please close this tab and return to your REDCap form and press 'SAVE' to submit your form.</p>
             <div class="mt-4 btn btn-danger btn-lg" role="button">Close Tab</div>
         </div>
@@ -28,15 +41,7 @@ if (isset($_GET['action']) && $_GET['action'] == "refresh") {
         </script>
     <?php
 
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } else {
-        $ip = $_SERVER['REMOTE_ADDR'];
-    }
-
-    $module->emLog("Session refreshed", $ip);
+    $module->emLog("Session refreshed", $module->getIp());
     exit();
 }
 

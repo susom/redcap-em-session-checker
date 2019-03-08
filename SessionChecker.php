@@ -12,6 +12,17 @@ class SessionChecker extends \ExternalModules\AbstractExternalModule
         parent::__construct();
     }
 
+    public function getIp() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
     public function redcap_data_entry_form_top($project_id, $record = NULL, $instrument, $event_id, $group_id = NULL, $repeat_instance = 1)
     {
         // CREATE SESSION CHECKER
@@ -26,6 +37,9 @@ class SessionChecker extends \ExternalModules\AbstractExternalModule
 
                 // This determines whether or not we log to the client console
                 sessionChecker.jsLog = <?php echo $this->isDev() ?>;
+
+                // Log the current IP address
+                sessionChecker.ip = <?php echo $this->getIp() ?>;
 
                 // Set to true on startup
                 sessionChecker.status = true;

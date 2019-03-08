@@ -8,7 +8,7 @@ sessionChecker.checkBeforeSubmit = function() {
 
     $.ajax({
         type: "GET",
-        url: sessionChecker.checkUrl
+        url: sessionChecker.checkUrl + '&ip=' + sessionChecker.ip
     }).always(function(data) {
         var modal = $('#session-checker-modal');
         var isOpen = (modal.data('bs.modal') || {})._isShown;
