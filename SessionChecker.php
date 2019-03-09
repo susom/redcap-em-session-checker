@@ -39,7 +39,7 @@ class SessionChecker extends \ExternalModules\AbstractExternalModule
                 sessionChecker.jsLog = <?php echo $this->isDev() ?>;
 
                 // Log the current IP address
-                sessionChecker.ip = <?php echo $this->getIp() ?>;
+                sessionChecker.ip = <?php echo json_encode($this->getIp()) ?>;
 
                 // Set to true on startup
                 sessionChecker.status = true;
