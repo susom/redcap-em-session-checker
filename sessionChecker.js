@@ -5,7 +5,6 @@
 sessionChecker.checkBeforeSubmit = function() {
 
     sessionChecker.log('About to run checkBeforeSubmit');
-
     $.ajax({
         type: "GET",
         url: sessionChecker.checkUrl + '&ip=' + sessionChecker.ip
@@ -91,15 +90,21 @@ sessionChecker.log = function() {
  * Override the normal formSubmitDataEntry function from base.js
  * with a replacement function that allows us to insert our check first
  */
-// Archive the original
-sessionChecker.formSubmitDataEntry = formSubmitDataEntry;
+sessionChecker.setupProxy = function() {
 
-// Redefine the original
-formSubmitDataEntry = function () {
-    // Reset the status on a new-save
-    sessionChecker.status = true;
+    sessionChecker.formSubmitDataEntry = formSubmitDataEntry;
+    formSubmitDataEntry = function () {
+        // Reset the status on a new-save
+        sessionChecker.status = true;
+        return sessionChecker.checkBeforeSubmit();
+    };
+    sessionChecker.log("Proxied formSubmitDataEntry function with sessionChecker");
 
-    return sessionChecker.checkBeforeSubmit();
 };
 
-sessionChecker.log("Proxied formSubmitDataEntry function with sessionChecker");
+
+$(document).ready(function() {
+    // Redefine the original - as of version 8.2 this function is dynamically loaded
+    // so we need to do this with a timeout to ensure the rest of the page has completed
+    setTimeout(sessionChecker.setupProxy, 100);
+});
